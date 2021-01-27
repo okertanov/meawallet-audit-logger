@@ -1,6 +1,12 @@
 MeaWallet C++ Developer’s Home Task
 ===================================
 
+Architecture overview
+---------------------
+
+TBD
+
+
 Requirements
 ------------
     
