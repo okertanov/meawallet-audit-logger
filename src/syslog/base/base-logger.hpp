@@ -1,3 +1,7 @@
+//
+// Copyright © 2021 MeaWallet. All rights reserved.
+//
+
 #ifndef _AL_SYSLOG_BASE_BASE_LOGGER_HPP_
 #define _AL_SYSLOG_BASE_BASE_LOGGER_HPP_
 
@@ -9,10 +13,8 @@
 #include <sstream>
 #include <iomanip>
 
-namespace al::syslog::base
-{
-    class base_logger
-    {
+namespace al::syslog::base {
+    class base_logger {
         public:
             base_logger() {
             }
@@ -21,7 +23,7 @@ namespace al::syslog::base
             }
 
         protected:
-            std::string timestamp_str() {
+            std::string timestamp_str() const {
                 const auto now_clock = std::chrono::system_clock::now();
                 auto msecs = std::chrono::duration_cast<std::chrono::milliseconds>(now_clock.time_since_epoch()) % 1000;
                 const auto now_time = std::chrono::system_clock::to_time_t(now_clock);
@@ -36,11 +38,11 @@ namespace al::syslog::base
             }
 
         public:
-            virtual void debug(const std::string& category, const std::string& msg, ...) = 0;
-            virtual void info(const std::string& category, const std::string& msg, ...) = 0;
-            virtual void warning(const std::string& category, const std::string& msg, ...) = 0;
-            virtual void error(const std::string& category, const std::string& msg, ...) = 0;
-            virtual void error(const std::string& category, const std::string& msg, const std::exception& e, ...) = 0;
+            virtual void debug(const std::string& category, const std::string& msg) const = 0;
+            virtual void info(const std::string& category, const std::string& msg) const = 0;
+            virtual void warning(const std::string& category, const std::string& msg) const = 0;
+            virtual void error(const std::string& category, const std::string& msg) const = 0;
+            virtual void error(const std::string& category, const std::string& msg, const std::exception& e) const = 0;
     };
 }
 

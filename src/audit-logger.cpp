@@ -1,34 +1,52 @@
+//
+// Copyright © 2021 MeaWallet. All rights reserved.
+//
+
 #include <memory>
 #include <cstdlib>
+#include <stdexcept>
 #include <exception>
+#include <vector>
 
-#include "application/application.hpp"
-#include "audit/logger.hpp"
 #include "syslog/syslog.hpp"
 #include "syslog/console/console-logger.hpp"
+#include "config/config.hpp"
+#include "config/base-source.hpp"
+#include "config/cmdline-source.hpp"
+#include "config/environment-source.hpp"
+#include "application/application.hpp"
 
-int main(int argc, char** argv) {
+int main(int argc, const char* argv[], const char* envp[]) {
     auto ret_code = EXIT_SUCCESS;
 
-    // 1. Configure system logger
-    auto const inner_logger = std::make_shared<al::syslog::console::console_logger>();
-    al::syslog::syslog::set_inner_logger(inner_logger);
+    // Configure system logger to use here and inside the application and modules.
+    al::syslog::syslog::set_inner_logger(
+        std::make_shared<al::syslog::console::console_logger>()
+    );
     
-    auto const app_name = std::string(argv[0]);
-    auto const logger = al::syslog::syslog::create(app_name);
+    // Create local logger instance for this 'main' scope.
+    const auto logger = al::syslog::syslog::create("audit-logger");
 
     logger->info("Starting...");
 
     try {
-        // 2. Retrieve a configuration
+        // Exctract configuration from the commandline and system environment.
+        const std::vector<std::shared_ptr<al::config::source::base_source>> config_sources = {
+            std::make_shared<al::config::source::environment_source>(envp),
+            std::make_shared<al::config::source::cmdline_source>(argc, argv)
+        };
+        const auto config = std::make_shared<al::config::config>(config_sources);
 
-        // 3. Botstrap Audit logger amd Crypto
+        // Create an application instance.
+        const auto app = std::make_unique<al::application::application>();
 
-        // 4. Bootstrap an application
-
+        // Then bootstrap this application with its dependencies and start running it.
+        app->with(config)
+           ->bootstrap()
+           ->run();
     }
     catch(std::exception& e) {
-        logger->error("Error:", e);
+        logger->error("Error: ", e);
         ret_code = EXIT_FAILURE;
     }
 

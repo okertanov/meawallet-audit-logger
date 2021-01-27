@@ -12,20 +12,22 @@ build-tests:
 test:
 	make -C src $@
 
-run-dump:
-	audit-logger
+audit-logger: build-app
 
-run-count:
-	audit-logger --count
+run-dump: audit-logger
+	./audit-logger
 
-run-reset:
-	audit-logger --reset
+run-count: audit-logger
+	./audit-logger --count
 
-run-monitor:
-	audit-logger --monitor
+run-reset: audit-logger
+	./audit-logger --reset
 
-run-log:
-	audit-logger --data="${DATA}"
+run-monitor: audit-logger
+	./audit-logger --monitor
+
+run-log: audit-logger
+	./audit-logger --data="${DATA}"
 
 clean:
 	make -C src $@

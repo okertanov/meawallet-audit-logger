@@ -1,3 +1,7 @@
+//
+// Copyright © 2021 MeaWallet. All rights reserved.
+//
+
 #include "syslog/syslog.hpp"
 
 namespace al::syslog

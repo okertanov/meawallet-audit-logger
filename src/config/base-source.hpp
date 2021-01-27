@@ -1,12 +1,14 @@
+//
+// Copyright © 2021 MeaWallet. All rights reserved.
+//
+
 #ifndef _AL_CONFIG_SOURCE_BASE_SOURCE_HPP_
 #define _AL_CONFIG_SOURCE_BASE_SOURCE_HPP_
 
 #pragma once
 
-namespace al::config::source
-{
-    class base_source
-    {
+namespace al::config::source {
+    class base_source {
     };
 }
 
