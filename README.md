@@ -51,7 +51,8 @@ Build, test and run
     make clean all
     make tests
 
-    make run-log DATA="{....}"
+    make run-help
+    make run-log ENTRY="{....}"
     make run-count
     make run-dump
     make run-reset
@@ -101,7 +102,7 @@ TODO:
 
     --datadir=storage
     --debug
-    --data="{...}"
+    --entry="{...}"
 
 
 Links

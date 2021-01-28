@@ -18,7 +18,7 @@ namespace al::config::source {
         public:
             environment_source(const char* envp[]) {
                 for (; *envp != nullptr; ++envp) {
-                    _env.push_back(std::string(*envp));
+                    _args.push_back(std::string(*envp));
                 }
             }
 
@@ -29,7 +29,9 @@ namespace al::config::source {
                 auto normalized_key = std::string{ key };
                 std::transform(normalized_key.begin(), normalized_key.end(), normalized_key.begin(), ::toupper);
 
-                const auto found = std::find(_env.begin(), _env.end(), normalized_key) != _env.end();
+                const auto found = std::find_if(_args.begin(), _args.end(), [&](auto s) {
+                    return s.find(normalized_key) != std::string::npos;
+                }) != _args.end();
                 return found;
             }
 
@@ -52,8 +54,11 @@ namespace al::config::source {
                 auto normalized_key = std::string{ key };
                 std::transform(normalized_key.begin(), normalized_key.end(), normalized_key.begin(), ::toupper);
 
-                const auto found_key = std::find(_env.begin(), _env.end(), normalized_key);
-                if (found_key == _env.end()) {
+                const auto found_key = std::find_if(_args.begin(), _args.end(), [&](auto s) {
+                    return s.find(normalized_key) != std::string::npos;
+                });
+                
+                if (found_key == _args.end()) {
                     throw std::runtime_error("Key not found");
                 }
 
@@ -68,12 +73,12 @@ namespace al::config::source {
                     throw std::runtime_error("Value is empty");
                 }
 
-                const auto value = found_key->substr(found_delimiter, found_key_length - 1);
-                return value;;
+                const auto value = found_key->substr(found_delimiter + 1, found_key_length - 1);
+                return value;
             }
 
         private:
-            std::vector<std::string> _env;
+            std::vector<std::string> _args;
     };
 }
 

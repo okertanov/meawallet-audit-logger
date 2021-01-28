@@ -4,48 +4,52 @@
 
 #include <memory>
 #include <cstdlib>
-#include <exception>
-#include <stdexcept>
-#include <cassert>
 
-#include "syslog/syslog.hpp"
-#include "syslog/console/console-logger.hpp"
+#include "tests/base-test.hpp"
+
 #include "config/config.hpp"
 #include "config/base-source.hpp"
 #include "config/cmdline-source.hpp"
 #include "config/environment-source.hpp"
-#include "application/application.hpp"
+
+class app_test: public al::tests::base_test {
+    public:
+        app_test(const std::string suite_description): al::tests::base_test(suite_description) {
+        }
+};
 
 int main(void) {
-    auto ret_code = EXIT_SUCCESS;
+    const auto t = std::make_shared<app_test>(std::string("APP TEST"));
 
-    // Configure system logger to use here and inside the application and modules.
-    al::syslog::syslog::set_inner_logger(
-        std::make_shared<al::syslog::console::console_logger>()
-    );
-    
-    // Create local logger instance for this 'main' scope.
-    const auto logger = al::syslog::syslog::create("app-test");
+    const auto result = t->test("The configurations contain all params", [](){
 
-    logger->info("Starting...");
-
-    try {
-        const char* argv[] = { "--datadir=storage", "--debug", "--monitor", "--count", "--reset", "--data=\"{...}\"" };
+        const char* argv[] = { "--help", "--datadir=storage", "--debug", "--monitor", "--count", "--reset", "--entry=\"{...}\"" };
         const auto argc = sizeof(argv) / sizeof(argv[0]);
-        const char* envp[] = { "DATADIR=storage", "DEBUG", "MONITOR", "COUNT", "RESET", "DATA=\"{...}\"", nullptr };
+        const char* envp[] = { "HELP", "DATADIR=storage", "DEBUG", "MONITOR", "COUNT", "RESET", "ENTRY=\"{...}\"", nullptr };
 
         const std::vector<std::shared_ptr<al::config::source::base_source>> config_sources = {
             std::make_shared<al::config::source::environment_source>(envp),
             std::make_shared<al::config::source::cmdline_source>(argc, argv)
         };
         const auto config = std::make_shared<al::config::config>(config_sources);
-    }
-    catch(std::exception& e) {
-        logger->error("Error: ", e);
-        ret_code = EXIT_FAILURE;
-    }
 
-    logger->info("Done.");
+        auto result = true;
 
-    return ret_code;
+        assert(config->is_help());
+        assert(config->is_debug());
+        assert(config->is_data_dir_overriden());
+        assert(config->get_data_dir() == "storage");
+        // This 'is_dump_mode' is FALSE since we have all modes turned on
+        assert(false == config->is_dump_mode());
+        assert(config->is_monitor_mode());
+        assert(config->is_count_mode());
+        assert(config->is_reset_mode());
+        assert(config->is_log_mode());
+        assert(config->is_entry_provided());
+        assert(config->get_entry() == "\"{...}\"");
+      
+        return result;
+    });
+
+    return result ? EXIT_SUCCESS : EXIT_FAILURE;
 }

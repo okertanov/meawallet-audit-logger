@@ -24,7 +24,9 @@ namespace al::config::source {
             }
 
             virtual bool has_key(const std::string& key) const {
-                const auto found = std::find(_args.begin(), _args.end(), key) != _args.end();
+                const auto found = std::find_if(_args.begin(), _args.end(), [&](auto s) {
+                    return s.find(key) != std::string::npos;
+                }) != _args.end();
                 return found;
             }
 
@@ -41,7 +43,10 @@ namespace al::config::source {
             }
 
             virtual std::string get_value(const std::string& key) const {
-                const auto found_key = std::find(_args.begin(), _args.end(), key);
+                const auto found_key = std::find_if(_args.begin(), _args.end(), [&](auto s) {
+                    return s.find(key) != std::string::npos;
+                });
+                
                 if (found_key == _args.end()) {
                     throw std::runtime_error("Key not found");
                 }
@@ -57,7 +62,7 @@ namespace al::config::source {
                     throw std::runtime_error("Value is empty");
                 }
 
-                const auto value = found_key->substr(found_delimiter, found_key_length - 1);
+                const auto value = found_key->substr(found_delimiter + 1, found_key_length - 1);
                 return value;
             }
 
