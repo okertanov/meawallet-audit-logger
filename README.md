@@ -69,13 +69,13 @@ TODO:
     new audit with logger with output new console or file writer with interceptor with crypto
     new app with config with cmdline with audit
 
-    --datadir="storage"
+    --datadir=storage
     --debug
     --monitor
     --count
     --reset
 
-    --datadir="storage"
+    --datadir=storage
     --debug
     --data="{...}"
 

@@ -1,17 +1,17 @@
 {
     "env": {
-        "myDefaultIncludePath": ["${workspaceFolder}/src"]
     },
     "configurations": [
       {
         "name": "Local",
         "intelliSenseMode": "${default}",
-        "includePath": ["${myDefaultIncludePath}"],
+        "includePath": ["${workspaceFolder}/src"],
         "cStandard": "c11",
         "cppStandard": "c++17",
+        "defines": [],
         "browse": {
-          "path": ["${workspaceFolder}/src"],
-          "limitSymbolsToIncludedHeaders": false,
+          "path": ["${workspaceFolder}", "${workspaceFolder}/src"],
+          "limitSymbolsToIncludedHeaders": true,
           "databaseFilename": ""
         }
       }
