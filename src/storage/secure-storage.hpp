@@ -13,6 +13,13 @@
 #include "crypto/crypto.hpp"
 
 namespace al::storage {
+    enum secure_storage_state_t {
+        EMPTY,
+        GOOD,
+        BAD,
+        NO_ACCESS
+    };
+
     class secure_storage {
         public:
             secure_storage(std::shared_ptr<al::crypto::crypto> crypto) :
@@ -21,6 +28,13 @@ namespace al::storage {
             }
 
             virtual ~secure_storage() {
+            }
+
+            void initialize(void) {
+            }
+
+            secure_storage_state_t verify(void) {
+                return secure_storage_state_t::EMPTY;
             }
 
         private:

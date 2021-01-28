@@ -16,27 +16,27 @@ namespace al::syslog::console {
     class console_logger: public al::syslog::base::base_logger {
         public:
             virtual void debug(const std::string& category, const std::string& msg) const {
-                std::cout << timestamp_str() << ":" << "<" << category << ">" << ": " << msg;
+                std::cout << timestamp_str() << ":" << "[" << category << "]" << ": " << msg;
                 std::cout << std::endl;
             }
 
             virtual void info(const std::string& category, const std::string& msg) const {
-                std::cout << timestamp_str() << ":" << "<" << category << ">" << ": " << msg;
+                std::cout << timestamp_str() << ":" << "[" << category << "]" << ": " << msg;
                 std::cout << std::endl;
             }
 
             virtual void warning(const std::string& category, const std::string& msg) const {
-                std::cout << timestamp_str() << ":" << "<" << category << ">" << ": " << msg;
+                std::cout << timestamp_str() << ":" << "[" << category << "]" << ": " << msg;
                 std::cout << std::endl;
             }
 
             virtual void error(const std::string& category, const std::string& msg) const {
-                std::cerr << timestamp_str() << ":" << "<" << category << ">" << ": " << msg;
+                std::cerr << timestamp_str() << ":" << "[" << category << "]" << ": " << msg;
                 std::cerr << std::endl;
             }
 
             virtual void error(const std::string& category, const std::string& msg, const std::exception& e) const  {
-                std::cerr << timestamp_str() << ":" << "<" << category << ">" << ": " << msg << e.what();
+                std::cerr << timestamp_str() << ":" << "[" << category << "]" << ": " << msg << e.what();
                 std::cerr << std::endl;
             }
     };

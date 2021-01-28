@@ -82,3 +82,6 @@ TODO:
 
 Links
 -----
+[https://asecuritysite.com/encryption/ccmaes](https://asecuritysite.com/encryption/ccmaes)  
+[https://www.openssl.org/docs/manmaster/man1/openssl-mac.html](https://www.openssl.org/docs/manmaster/man1/openssl-mac.html)  
+[https://stackoverflow.com/questions/33017333/different-encryption-results-between-platforms-using-openssl](https://stackoverflow.com/questions/33017333/different-encryption-results-between-platforms-using-openssl)  

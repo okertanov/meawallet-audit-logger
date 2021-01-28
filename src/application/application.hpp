@@ -8,6 +8,8 @@
 #pragma once
 
 #include <memory>
+#include <exception>
+#include <stdexcept>
 
 #include "syslog/syslog.hpp"
 #include "config/config.hpp"
@@ -74,20 +76,40 @@ namespace al::application {
             }
 
             virtual const application* run(void) const {
-                _logger->debug("Running...");
-                
                 run_impl();
 
                 return this;
             }
 
             virtual void terminate(void) const {
-                _logger->debug("Terminating...");
             }
 
         protected:
-            void run_impl() const {
-                // 1. Select its current running mode: audit log entry producer or log dumper
+            void run_impl(void) const {
+                // Initialize storage first, then verify its integrity.
+                _storage->initialize();
+                const auto storage_state = _storage->verify();
+                _logger->info(std::string("Secure storage: ") +
+                    (storage_state == al::storage::EMPTY ? "empty" : storage_state == al::storage::GOOD ? "good" :
+                    storage_state == al::storage::BAD ? "bad" : storage_state == al::storage::NO_ACCESS ? "no access" : "unknown")
+                );
+
+                // Select its current running mode: audit log entry producer or log dumper.
+                if (_config->is_dump_mode()) {
+                    run_dump_mode_impl();
+                }
+                else if (_config->is_log_mode()) {
+                    run_log_mode_impl();
+                }
+                else {
+                    throw std::runtime_error("Wrong application mode");
+                }
+            }
+
+            void run_dump_mode_impl(void) const {
+            }
+
+            void run_log_mode_impl(void) const {
             }
 
         private:

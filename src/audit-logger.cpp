@@ -4,8 +4,8 @@
 
 #include <memory>
 #include <cstdlib>
-#include <stdexcept>
 #include <exception>
+#include <stdexcept>
 #include <vector>
 
 #include "syslog/syslog.hpp"
