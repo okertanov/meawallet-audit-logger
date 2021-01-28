@@ -1,2 +1,5 @@
 audit-logger
 src/audit-logger
+src/tests/app-test
+src/tests/audit-test
+src/tests/crypto-test
