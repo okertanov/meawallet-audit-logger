@@ -37,6 +37,11 @@ clean:
 	-@rm -f audit-logger
 
 sys-install:
+	apt-get install -y make
+	apt-get install -y build-essential
+	apt-get install -y g++
+	apt-get install -y clang
+	apt-get install -y openssl libssl-dev
 
 .PHONY: all build build-app build-tests tests run-dump run-count run-reset run-monitor run-log clean sys-install
 
