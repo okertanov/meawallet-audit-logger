@@ -30,9 +30,30 @@ namespace al::storage {
             virtual ~secure_storage() {
             }
 
+            //
+            // Gets access to a storage. If no data files - recreates them.
+            // Layout is:
+            //      storage/
+            //          keys/
+            //              audit_encryption
+            //              audit_mac
+            //              storage_encryption
+            //              storage_mac
+            //          audit_log
+            //          secure_storage
+            //
             void initialize(void) {
             }
 
+            //
+            // Wipes audit_log entries and resets secure_storage to 0.
+            //
+            void reset(void) {
+            }
+
+            //
+            // Checks the storage integrity.
+            //
             secure_storage_state_t verify(void) {
                 return secure_storage_state_t::EMPTY;
             }
