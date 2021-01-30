@@ -18,6 +18,7 @@
 #include "audit/file/file-logger.hpp"
 #include "interceptor/base-interceptor.hpp"
 #include "interceptor/crypto-interceptor.hpp"
+#include "storage/base-storage.hpp"
 #include "storage/secure-storage.hpp"
 
 namespace al::application {
@@ -65,7 +66,7 @@ namespace al::application {
                 return this;
             }
 
-            virtual const application* with(const std::shared_ptr<al::storage::secure_storage> storage) const {
+            virtual const application* with(const std::shared_ptr<al::storage::base_storage> storage) const {
                 _storage = storage;
                 return this;
             }
@@ -117,7 +118,7 @@ namespace al::application {
             mutable std::shared_ptr<al::config::config> _config;
             mutable std::shared_ptr<al::crypto::crypto> _crypto;
             mutable std::shared_ptr<al::interceptor::base_interceptor> _interceptor;
-            mutable std::shared_ptr<al::storage::secure_storage> _storage;
+            mutable std::shared_ptr<al::storage::base_storage> _storage;
             mutable std::shared_ptr<al::audit::base::base_logger> _audit_logger;
     };
 }

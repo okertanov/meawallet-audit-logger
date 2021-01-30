@@ -11,12 +11,12 @@
 
 #include "interceptor/base-interceptor.hpp"
 #include "syslog/syslog.hpp"
-#include "crypto/crypto.hpp"
+#include "crypto/base-crypto.hpp"
 
 namespace al::interceptor {
     class crypto_interceptor: public al::interceptor::base_interceptor {
         public:
-            crypto_interceptor(std::shared_ptr<al::crypto::crypto> crypto) :
+            crypto_interceptor(std::shared_ptr<al::crypto::base_crypto> crypto) :
                 _logger(al::syslog::syslog::create("crypto_interceptor")),
                 _crypto(crypto) {
             }
@@ -26,7 +26,7 @@ namespace al::interceptor {
 
         private:
             const std::shared_ptr<al::syslog::syslog> _logger;
-            const std::shared_ptr<al::crypto::crypto> _crypto;
+            const std::shared_ptr<al::crypto::base_crypto> _crypto;
     };
 }
 

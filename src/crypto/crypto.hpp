@@ -7,8 +7,10 @@
 
 #pragma once
 
+#include "crypto/base-crypto.hpp"
+
 namespace al::crypto {
-    class crypto {
+    class crypto: public al::crypto::base_crypto {
     };
 }
 

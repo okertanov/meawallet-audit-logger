@@ -30,11 +30,11 @@ namespace al::syslog::base {
                 auto gmt_time = gmtime(&now_time);
                 auto timestamp = std::put_time(gmt_time, "%d.%m.%Y:%H:%M:%S");
                 
-                std::stringstream ss;
-                ss << timestamp;
-                ss << '.' << std::setfill('0') << std::setw(3) << msecs.count();
+                std::stringstream str_stream;
+                str_stream << timestamp;
+                str_stream << '.' << std::setfill('0') << std::setw(3) << msecs.count();
 
-                return ss.str();
+                return str_stream.str();
             }
 
         public:
