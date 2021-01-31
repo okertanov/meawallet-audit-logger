@@ -42,7 +42,7 @@ namespace al::application {
                 const auto storage = std::make_shared<al::storage::secure_storage>(crypto);
                 this->with(storage);
 
-                const auto interceptor = std::make_shared<al::interceptor::crypto_interceptor>(crypto);
+                const auto interceptor = std::make_shared<al::interceptor::crypto_interceptor>(storage, crypto);
                 this->with(interceptor);
 
                 const auto audit_logger = std::make_shared<al::audit::file::file_logger>(storage, interceptor);

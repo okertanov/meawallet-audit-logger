@@ -16,8 +16,12 @@
 namespace al::interceptor {
     class crypto_interceptor: public al::interceptor::base_interceptor {
         public:
-            crypto_interceptor(std::shared_ptr<al::crypto::base_crypto> crypto) :
+            crypto_interceptor(
+                std::shared_ptr<al::storage::base_storage> storage,
+                std::shared_ptr<al::crypto::base_crypto> crypto
+            ) :
                 _logger(al::syslog::syslog::create("crypto_interceptor")),
+                _storage(storage),
                 _crypto(crypto) {
             }
 
@@ -28,8 +32,13 @@ namespace al::interceptor {
                 return input;
             }
 
+            virtual const std::string transform_back(const std::string& input) const {
+                return input;
+            }
+
         private:
             const std::shared_ptr<al::syslog::syslog> _logger;
+            const std::shared_ptr<al::storage::base_storage> _storage;
             const std::shared_ptr<al::crypto::base_crypto> _crypto;
     };
 }

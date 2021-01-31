@@ -78,7 +78,27 @@ namespace al::storage {
             // Checks the storage integrity.
             //
             virtual storage_state_t verify(void) const {
-                return storage_state_t::EMPTY;
+                try {
+                    ensure_dir_exists(_full_storage_path, false);
+                
+                    ensure_dir_exists(_full_storage_path / std::filesystem::path("keys"), false);
+                    ensure_file_exists(_full_storage_path / std::filesystem::path("keys") / std::filesystem::path("audit_encryption") , false);
+                    ensure_file_exists(_full_storage_path / std::filesystem::path("keys") / std::filesystem::path("audit_mac") , false);
+                    ensure_file_exists(_full_storage_path / std::filesystem::path("keys") / std::filesystem::path("storage_encryption") , false);
+                    ensure_file_exists(_full_storage_path / std::filesystem::path("keys") / std::filesystem::path("storage_mac") , false);
+
+                    ensure_file_exists(_full_storage_path / std::filesystem::path("audit_log") , false);
+                    ensure_file_exists(_full_storage_path / std::filesystem::path("secure_storage") , false);
+
+                    if (count_audit_log() == 0ULL) {
+                        return storage_state_t::EMPTY;
+                    }
+
+                    return storage_state_t::GOOD;
+                }
+                catch(std::exception& e) {
+                    return storage_state_t::BAD;
+                }
             }
 
             //

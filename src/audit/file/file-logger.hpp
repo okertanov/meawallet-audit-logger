@@ -51,7 +51,7 @@ namespace al::audit::file {
                 std::stringstream lites_stringstream;
 
                 for (const auto& line : lines) {
-                    const auto line_decoded = _interceptor->transform(line);
+                    const auto line_decoded = _interceptor->transform_back(line);
                     lites_stringstream << line_decoded << std::endl;
                 }
 

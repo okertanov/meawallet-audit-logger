@@ -17,6 +17,7 @@ namespace al::interceptor {
            }
 
            virtual const std::string transform(const std::string& input) const = 0;
+           virtual const std::string transform_back(const std::string& input) const = 0;
     };
 }
 
