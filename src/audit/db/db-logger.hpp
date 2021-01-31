@@ -11,6 +11,7 @@
 
 namespace al::audit::db {
     class db_logger: public al::audit::base::base_logger {
+        // TBD
     };
 }
 

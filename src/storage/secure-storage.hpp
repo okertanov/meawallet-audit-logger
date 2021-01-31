@@ -71,6 +71,7 @@ namespace al::storage {
             // Wipes audit_log entries and resets secure_storage to 0.
             //
             virtual void reset(void) const {
+                reset_impl();
             }
 
             //
@@ -167,6 +168,24 @@ namespace al::storage {
                 }
 
                 throw std::runtime_error("File not exists: " + path.string());
+            }
+
+            void reset_impl(void) const {
+                const auto audit_log_path = _full_storage_path / std::filesystem::path("audit_log");
+
+                if (!std::filesystem::exists(audit_log_path)) {
+                    throw std::runtime_error("File not exists: " + audit_log_path.string());
+                }
+
+                // Wipe audit log file
+                std::filesystem::remove(audit_log_path);
+
+                // Then re-create it again but empty
+                ensure_file_exists(_full_storage_path / std::filesystem::path("audit_log") , true);
+
+                // Reset storage record to zero
+                const auto record = secure_storage_record_t { 0ULL };
+                write_secure_storage_record(record);
             }
 
             const std::string read_all_contents(const std::filesystem::path& path) const {

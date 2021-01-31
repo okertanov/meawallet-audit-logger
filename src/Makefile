@@ -1,5 +1,5 @@
-#CXX:=g++
-CXX:=clang++
+CXX:=g++
+#CXX:=clang++
 CXXFLAGS:=-std=c++17 -Wall -Wextra -I./
 LDFLAGS:=
 LDLIBS:=
