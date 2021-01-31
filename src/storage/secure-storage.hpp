@@ -206,7 +206,7 @@ namespace al::storage {
               
                 {
                     std::ofstream out_stream;
-                    out_stream.open(audit_log_path.string());
+                    out_stream.open(audit_log_path.string(), std::ofstream::out | std::ofstream::app);
                     out_stream << line << std::endl;
                 }
             }

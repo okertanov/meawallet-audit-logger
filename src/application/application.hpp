@@ -145,9 +145,7 @@ namespace al::application {
 
             void run_dump_mode_impl(void) const {
                 const auto records = _audit_logger->read_audit_log();
-                std::cout 
-                    << (records.length() > 0 ? records : "<AUDIT LOG EMPTY>")
-                    << std::endl;
+                std::cout << (records.length() > 0 ? records : "<AUDIT LOG EMPTY>\n");
             }
 
             void run_log_mode_impl(void) const {
