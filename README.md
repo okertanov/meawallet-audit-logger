@@ -88,6 +88,13 @@ Data format
     }
     ...
 
+Misc
+----
+### MacOS
+
+    brew install openssl
+    brew link openssl
+
 
 TODO:
 -----
