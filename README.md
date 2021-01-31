@@ -88,6 +88,7 @@ Data format
     }
     ...
 
+
 Misc
 ----
 ### MacOS
@@ -96,8 +97,8 @@ Misc
     brew link openssl
 
 
-TODO:
------
+TODO
+----
     new audit with logger with output new console or file writer with interceptor with crypto
     new app with config with cmdline with audit
 
@@ -112,6 +113,12 @@ TODO:
     --debug
     --entry="{...}"
 
+
+Issues
+------
+    - No JSON parser/validator;
+    - No secuental date/time check for entries;
+    - Commandline params handling isn't restrictive and accept anything;
 
 Links
 -----
