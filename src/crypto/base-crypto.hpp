@@ -15,6 +15,9 @@ namespace al::crypto {
 
             virtual ~base_crypto() {
             }
+
+            virtual const std::string encrypt(const std::string& data, const std::string key, const std::string mac) const = 0;
+            virtual const std::string decrypt(const std::string& data, const std::string key, const std::string mac) const = 0;
     };
 }
 

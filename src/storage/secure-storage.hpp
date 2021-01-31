@@ -268,7 +268,8 @@ namespace al::storage {
 
             secure_storage_record_t read_secure_storage_record_impl(void) const {
                 const auto secure_storage_contents = read_all_contents(_full_storage_path / std::filesystem::path("secure_storage"));
-                const auto records_count = std::stoull(secure_storage_contents);
+                const auto secure_storage_contents_decrypted = _crypto->decrypt(secure_storage_contents, _storage_encryption, _storage_mac);
+                const auto records_count = std::stoull(secure_storage_contents_decrypted);
                 const auto record = secure_storage_record_t { records_count };
                 return record;
             }
@@ -282,10 +283,11 @@ namespace al::storage {
 
                 std::stringstream str_stream;
                 str_stream << record.records_count;
+                const auto secure_storage_contents_encrypted = _crypto->encrypt(str_stream.str(), _storage_encryption, _storage_mac);
 
                 {
                     std::ofstream out_stream(secure_storage_path.string());
-                    out_stream << str_stream.str();
+                    out_stream << secure_storage_contents_encrypted;
                 }
             }
 

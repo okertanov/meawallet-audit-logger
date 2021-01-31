@@ -13,7 +13,7 @@ build-app: audit-logger
 audit-logger: audit-logger.cpp syslog/syslog.cpp
 	${CXX} ${CXXFLAGS} $? ${LDFLAGS} ${LDLIBS} -o $@
 
-build-tests: tests/app-test tests/crypto-test tests/audit-test
+build-tests: tests/app-test tests/crypto-test tests/audit-test tests/storage-test
 
 tests/app-test: tests/app-test.cpp syslog/syslog.cpp
 	${CXX} ${CXXFLAGS} $? ${LDFLAGS} ${LDLIBS} -o $@

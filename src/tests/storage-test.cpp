@@ -11,6 +11,14 @@
 #include "storage/secure-storage.hpp"
 
 class test_crypto: public al::crypto::base_crypto {
+    public:
+        virtual const std::string encrypt(const std::string& data, const std::string key, const std::string mac) const {
+            return data;
+        }
+
+        virtual const std::string decrypt(const std::string& data, const std::string key, const std::string mac) const {
+            return data;
+        }
 };
 
 class storage_test: public al::tests::base_test {
