@@ -269,7 +269,10 @@ namespace al::storage {
             secure_storage_record_t read_secure_storage_record_impl(void) const {
                 const auto secure_storage_contents = read_all_contents(_full_storage_path / std::filesystem::path("secure_storage"));
                 const auto secure_storage_contents_decrypted = _crypto->decrypt(secure_storage_contents, get_storage_encryption(), get_storage_mac());
-                const auto records_count = std::stoull(secure_storage_contents_decrypted);
+                // If enpty file so decrypted is empty too, use 0.
+                const auto secure_storage_contents_decrypted_norm = secure_storage_contents_decrypted.length() > 0 ?
+                    secure_storage_contents_decrypted : std::string("0");
+                const auto records_count = std::stoull(secure_storage_contents_decrypted_norm);
                 const auto record = secure_storage_record_t { records_count };
                 return record;
             }

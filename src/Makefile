@@ -2,7 +2,7 @@ CXX:=g++
 #CXX:=clang++
 CXXFLAGS:=-std=c++17 -Wall -Wextra -I./ -I/usr/local/opt/openssl@1.1/include
 LDFLAGS:=-L/usr/local/opt/openssl@1.1/lib
-LDLIBS:=
+LDLIBS:=-lssl -lcrypto
 
 all: build
 

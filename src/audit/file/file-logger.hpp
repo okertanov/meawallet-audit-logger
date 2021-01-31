@@ -60,7 +60,7 @@ namespace al::audit::file {
 
             virtual void append_audit_log(const std::string& line) const {
                 const auto line_transformed = _interceptor->transform(line);
-                _storage->append_audit_log(line);
+                _storage->append_audit_log(line_transformed);
 
                 auto record = _storage->read_secure_storage_record();
                 record.records_count += 1;
