@@ -8,6 +8,8 @@
 #pragma once
 
 #include <memory>
+#include <string>
+#include <vector>
 #include <sstream>
 #include <fstream>
 #include <filesystem>
@@ -106,7 +108,7 @@ namespace al::storage {
                 return count_audit_log_impl();
             }
 
-            virtual const std::string read_audit_log(void) const {
+            virtual const std::vector<std::string> read_audit_log(void) const {
                 return read_audit_log_impl();
             }
 
@@ -183,10 +185,11 @@ namespace al::storage {
             }
 
             unsigned long long count_audit_log_impl(void) const {
-                return 0;
+                const auto lines = read_audit_log_impl();
+                return lines.size();
             }
 
-            const std::string read_audit_log_impl(void) const {
+            const std::vector<std::string> read_audit_log_impl(void) const {
                 // TODO: Fix to not to read all data at once, mmap/asio/iterators etc.
                 const auto audit_log_path = _full_storage_path / std::filesystem::path("audit_log");
 
@@ -194,7 +197,20 @@ namespace al::storage {
                     throw std::runtime_error("File not exists: " + audit_log_path.string());
                 }
 
-                return read_all_contents(audit_log_path);
+                const auto contents = read_all_contents(audit_log_path);
+
+                static const auto delimiter = std::string("\n");
+                std::vector<std::string> lines;
+                auto start = 0U;
+                auto end = contents.find(delimiter);
+                while (end != std::string::npos) {
+                    const auto line = contents.substr(start, end - start);
+                    lines.emplace_back(line);
+                    start = end + delimiter.length();
+                    end = contents.find(delimiter, start);
+                }
+
+                return lines;
             }
 
             void append_audit_log_impl(const std::string& line) const {

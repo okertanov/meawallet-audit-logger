@@ -9,6 +9,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 namespace al::storage {
     enum storage_state_t {
@@ -40,7 +41,7 @@ namespace al::storage {
             virtual const std::string get_storage_mac(void) const = 0;
 
             virtual unsigned long long count_audit_log(void) const = 0;
-            virtual const std::string read_audit_log(void) const = 0;
+            virtual const std::vector<std::string> read_audit_log(void) const = 0;
             virtual void append_audit_log(const std::string& line) const = 0;
 
             virtual secure_storage_record_t read_secure_storage_record(void) const = 0;
