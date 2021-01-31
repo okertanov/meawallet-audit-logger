@@ -29,11 +29,11 @@ namespace al::interceptor {
             }
 
             virtual const std::string transform(const std::string& input) const {
-                return input;
+                return _crypto->encrypt(input, _storage->get_audit_encryption(), _storage->get_audit_mac());
             }
 
             virtual const std::string transform_back(const std::string& input) const {
-                return input;
+                return _crypto->decrypt(input, _storage->get_audit_encryption(), _storage->get_audit_mac());
             }
 
         private:
