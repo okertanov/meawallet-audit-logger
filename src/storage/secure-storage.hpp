@@ -102,6 +102,10 @@ namespace al::storage {
             // Blob accessors
             //
 
+            virtual unsigned long long count_audit_log(void) const {
+                return count_audit_log_impl();
+            }
+
             virtual const std::string read_audit_log(void) const {
                 return read_audit_log_impl();
             }
@@ -178,8 +182,12 @@ namespace al::storage {
                 return contents;
             }
 
+            unsigned long long count_audit_log_impl(void) const {
+                return 0;
+            }
+
             const std::string read_audit_log_impl(void) const {
-                // TODO: Fix to not to read all data at once, mmap/asio etc.
+                // TODO: Fix to not to read all data at once, mmap/asio/iterators etc.
                 const auto audit_log_path = _full_storage_path / std::filesystem::path("audit_log");
 
                 if (!std::filesystem::exists(audit_log_path)) {

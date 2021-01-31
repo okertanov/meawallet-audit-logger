@@ -9,13 +9,15 @@
 
 #include <memory>
 #include <vector>
+#include <iostream>
 
 #include "config/base-source.hpp"
 
 namespace al::config {
     class config {
         public:
-            config(std::vector<std::shared_ptr<al::config::source::base_source>> sources): _sources(sources) {
+            config(std::vector<std::shared_ptr<al::config::source::base_source>> sources)
+                : _sources(sources) {
             }
 
             virtual ~config() {
@@ -63,11 +65,12 @@ namespace al::config {
             }
 
             bool is_log_mode() const {
-                return _sources[0]->has_key("data") || _sources[1]->has_key("data");
+                return _sources[0]->has_key("entry") || _sources[1]->has_key("entry");
             }
 
             bool is_entry_provided() const {
-                return (_sources[0]->has_key("entry") && _sources[0]->has_value("entry")) || (_sources[1]->has_key("entry") && _sources[1]->has_value("entry"));
+                return (_sources[0]->has_key("entry") && _sources[0]->has_value("entry")) ||
+                       (_sources[1]->has_key("entry") && _sources[1]->has_value("entry"));
             }
 
             std::string get_entry() const {
@@ -80,6 +83,20 @@ namespace al::config {
                 }
 
                 throw std::runtime_error("Value not found");
+            }
+
+            void show_usage(void) const {
+                std::cout
+                    << "Usage:" << std::endl
+                    << "\taudit-log" << std::endl
+                    << "\t\t--help" << std::endl
+                    << "\t\t--datadir=storage" << std::endl
+                    << "\t\t--debug" << std::endl
+                    << "\t\t--monitor" << std::endl
+                    << "\t\t--count" << std::endl
+                    << "\t\t--reset" << std::endl
+                    << "\t\t--entry=\"{...}\"" << std::endl
+                    << std::endl;
             }
 
         private:

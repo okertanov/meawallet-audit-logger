@@ -33,12 +33,16 @@ namespace al::storage {
             virtual void initialize(const std::string& base_path = "./") = 0;
             virtual void reset(void) const = 0;
             virtual storage_state_t verify(void) const = 0;
+
             virtual const std::string get_audit_encryption(void) const = 0;
             virtual const std::string get_audit_mac(void) const = 0;
             virtual const std::string get_storage_encryption(void) const = 0;
             virtual const std::string get_storage_mac(void) const = 0;
+
+            virtual unsigned long long count_audit_log(void) const = 0;
             virtual const std::string read_audit_log(void) const = 0;
             virtual void append_audit_log(const std::string& line) const = 0;
+
             virtual secure_storage_record_t read_secure_storage_record(void) const = 0;
             virtual void write_secure_storage_record(const secure_storage_record_t record) const = 0;
     };

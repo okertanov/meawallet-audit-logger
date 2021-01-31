@@ -8,7 +8,15 @@
 #pragma once
 
 namespace al::interceptor {
-    class base_interceptor{
+    class base_interceptor {
+        public:
+           base_interceptor() {
+           }
+
+           virtual ~base_interceptor() {
+           }
+
+           virtual const std::string transform(const std::string& input) const = 0;
     };
 }
 

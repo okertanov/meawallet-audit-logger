@@ -24,6 +24,10 @@ namespace al::interceptor {
             virtual ~crypto_interceptor() {
             }
 
+            virtual const std::string transform(const std::string& input) const {
+                return input;
+            }
+
         private:
             const std::shared_ptr<al::syslog::syslog> _logger;
             const std::shared_ptr<al::crypto::base_crypto> _crypto;
