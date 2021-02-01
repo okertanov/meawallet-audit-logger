@@ -7,9 +7,8 @@
 
 #pragma once
 
-#include <string>
 #include <memory>
-#include <cstdarg>
+#include <string>
 
 #include "syslog/base/base-logger.hpp"
 

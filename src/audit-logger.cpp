@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <exception>
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 #include "syslog/syslog.hpp"

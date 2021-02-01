@@ -8,6 +8,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 
 #include "syslog/syslog.hpp"
 #include "audit/base/base-logger.hpp"

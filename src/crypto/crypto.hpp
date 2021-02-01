@@ -27,15 +27,11 @@ namespace al::crypto {
 
             virtual const std::string encrypt(const std::string& data, const std::string key, const std::string mac) const {
                 const auto encrypted = _aes_cbc->encrypt(data, key, mac);
-                //_logger->debug(std::string("DATA IN: '") + data + "'");
-                //_logger->debug(std::string("ENCRYPTED: '") + encrypted + "'");
                 return encrypted;
             }
 
             virtual const std::string decrypt(const std::string& data, const std::string key, const std::string mac) const {
                 const auto decrypted = _aes_cbc->decrypt(data, key, mac);
-                //_logger->debug(std::string("DATA IN: '") + data + "'");
-                //_logger->debug(std::string("DECRYPTED: '") + decrypted + "'");
                 return decrypted;
             }
 

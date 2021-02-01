@@ -8,6 +8,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 
 #include "interceptor/base-interceptor.hpp"
 #include "syslog/syslog.hpp"
