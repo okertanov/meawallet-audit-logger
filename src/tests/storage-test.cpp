@@ -4,6 +4,7 @@
 
 #include <memory>
 #include <cstdlib>
+#include <tuple>
 
 #include "tests/base-test.hpp"
 
@@ -13,10 +14,14 @@
 class test_crypto: public al::crypto::base_crypto {
     public:
         virtual const std::string encrypt(const std::string& data, const std::string key, const std::string mac) const {
+            std::ignore = key;
+            std::ignore = mac;
             return data;
         }
 
         virtual const std::string decrypt(const std::string& data, const std::string key, const std::string mac) const {
+            std::ignore = key;
+            std::ignore = mac;
             return data;
         }
 };

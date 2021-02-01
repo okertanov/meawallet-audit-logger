@@ -11,6 +11,9 @@
 #include <string>
 #include <sstream>
 #include <iomanip>
+#include <tuple>
+#include <exception>
+#include <stdexcept>
 
 #include <openssl/conf.h>
 #include <openssl/evp.h>
@@ -31,6 +34,8 @@ namespace al::crypto {
             }
 
             virtual const std::string encrypt(const std::string& data, const std::string key, const std::string mac) const {
+                std::ignore = mac;
+
                 ERR_load_ERR_strings();
                 ERR_load_crypto_strings();
                 OpenSSL_add_all_algorithms();
@@ -40,6 +45,7 @@ namespace al::crypto {
                 const auto rc_init = EVP_CIPHER_CTX_init(ctx.get());
                 if (rc_init <= 0) {
                     ERR_print_errors_fp(stderr);
+                    throw std::runtime_error("Wrong crypto input");
                 }
 
                 const auto key_c = reinterpret_cast<const unsigned char*>(key.c_str());
@@ -48,6 +54,7 @@ namespace al::crypto {
 
                 if (rc_e_init <= 0) {
                     ERR_print_errors_fp(stderr);
+                    throw std::runtime_error("Wrong crypto input");
                 }
 
                 const auto blocklen = EVP_CIPHER_CTX_block_size(ctx.get());
@@ -62,6 +69,7 @@ namespace al::crypto {
 
                 if (rc_update <= 0) {
                     ERR_print_errors_fp(stderr);
+                    throw std::runtime_error("Wrong crypto input");
                 }
 
                 int finallen = outbuf_len - outlen;
@@ -69,10 +77,11 @@ namespace al::crypto {
 
                 if (rc_final <= 0) {
                     ERR_print_errors_fp(stderr);
+                    throw std::runtime_error("Wrong crypto input");
                 }
 
                 std::stringstream str_stream;
-                for (int i = 0; i < outlen + finallen; ++i) {
+                for (unsigned long i = 0; i < outlen + finallen; ++i) {
                     const auto ch = outbuf[i];
                     str_stream << std::setfill('0') << std::setw(2) << std::hex << (0xff & (unsigned int)ch);
                 }
@@ -81,6 +90,13 @@ namespace al::crypto {
             }
 
             virtual const std::string decrypt(const std::string& data, const std::string key, const std::string mac) const {
+                std::ignore = mac;
+
+                // No input produce no output for now.
+                if (data.length() == 0) {
+                    return data;
+                }
+
                 ERR_load_ERR_strings();
                 ERR_load_crypto_strings();
                 OpenSSL_add_all_algorithms();
@@ -90,6 +106,7 @@ namespace al::crypto {
                 const auto rc_init = EVP_CIPHER_CTX_init(ctx.get());
                 if (rc_init <= 0) {
                     ERR_print_errors_fp(stderr);
+                    throw std::runtime_error("Wrong crypto input");
                 }
 
                 const auto key_c = reinterpret_cast<const unsigned char*>(key.c_str());
@@ -98,22 +115,34 @@ namespace al::crypto {
 
                 if (rc_d_init <= 0) {
                     ERR_print_errors_fp(stderr);
+                    throw std::runtime_error("Wrong crypto input");
                 }
 
                 const auto blocklen = EVP_CIPHER_CTX_block_size(ctx.get());
 
-                const auto buflen = data.size();
+                // Convert hex data to raw bytes (see encrypt)
+                std::vector<unsigned char> raw_bytes;
+
+                for (unsigned int i = 0; i < data.length(); i += 2) {
+                    const auto one_byte = data.substr(i, 2);
+                    char byte = (char)strtol(one_byte.c_str(), NULL, 16);
+                    raw_bytes.push_back(byte);
+                }
+                
+                unsigned char* raw_bytes_c = reinterpret_cast<unsigned char*> (raw_bytes.data());
+                //
+
+                const auto buflen = raw_bytes.size();
                 const auto outbuf_len = buflen + blocklen;
-                const auto remainder = buflen % blocklen;
 
                 auto outbuf = (unsigned char*)calloc(outbuf_len, sizeof(unsigned char));
 
-                const auto data_c = reinterpret_cast<const unsigned char*>(data.c_str());
                 auto outlen = outbuf_len;
-                const auto rc_update = EVP_DecryptUpdate(ctx.get(), outbuf, (int*)&outlen, data_c, buflen);
+                const auto rc_update = EVP_DecryptUpdate(ctx.get(), outbuf, (int*)&outlen, raw_bytes_c, buflen);
 
                 if (rc_update <= 0) {
                     ERR_print_errors_fp(stderr);
+                    throw std::runtime_error("Wrong crypto input");
                 }
 
                 int finallen = 0;
@@ -121,6 +150,7 @@ namespace al::crypto {
 
                 if (rc_final <= 0) {
                     ERR_print_errors_fp(stderr);
+                    throw std::runtime_error("Wrong crypto input");
                 }
 
                 const auto decrypted = std::string(reinterpret_cast<const char*>(outbuf), outlen + finallen);
