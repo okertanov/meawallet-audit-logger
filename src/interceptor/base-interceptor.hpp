@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <string>
+
 namespace al::interceptor {
     class base_interceptor {
         public:

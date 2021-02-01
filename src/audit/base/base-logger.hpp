@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <string>
+
 namespace al::audit::base {
     class base_logger {
         public:

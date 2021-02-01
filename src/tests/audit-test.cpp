@@ -3,6 +3,7 @@
 //
 
 #include <memory>
+#include <string>
 #include <cstdlib>
 
 #include "tests/base-test.hpp"

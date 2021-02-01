@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <string>
+
 namespace al::crypto {
     class base_crypto {
         public:
