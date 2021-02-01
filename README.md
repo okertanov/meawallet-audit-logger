@@ -52,7 +52,7 @@ Build, test and run
     make tests
 
     make run-help
-    make run-log ENTRY="{....}"
+    make run-log LOG="{....}"
     make run-count
     make run-dump
     make run-reset
@@ -117,7 +117,7 @@ TODO
 Issues
 ------
     - No JSON parser/validator;
-    - No secuental date/time check for entries;
+    - No sequential date/time check for entries;
     - Commandline params handling isn't restrictive and accept anything;
 
 Links

@@ -30,7 +30,7 @@ run-monitor: audit-logger
 	./audit-logger --monitor
 
 run-log: audit-logger
-	./audit-logger --entry="${ENTRY}"
+	./audit-logger --entry=$(LOG)
 
 clean:
 	make -C src $@
